@@ -14,11 +14,11 @@ const app = express();
 // CORS middleware
 app.use(cors({
   origin: [
-    'http://localhost:3000', // Login Server
-    'http://localhost:3001', // Employee Server
-    'http://localhost:5500', // Live Server (Default)
+    'http://44.210.94.69:8036', // Login Server
+    'http://44.210.94.69:3412', // Employee Server
+    'http://44.210.94.69:5500', // Live Server (Default)
     'http://127.0.0.1:5500', // Live Server (IP)
-    'http://localhost:5501'  // Live Server (Alternate)
+    //'http://44.210.94.69:8037'  // Live Server (Alternate)
   ]
 }));
 app.use(express.json());
@@ -57,7 +57,7 @@ const upload = multer({
 // PostgreSQL connection
 const pool = new Pool({
   user: process.env.DB_USER || 'postgres',
-  host: process.env.DB_HOST || 'localhost',
+  host: process.env.DB_HOST || 'postgres',
   database: process.env.DB_NAME || 'auth_db',
   password: process.env.DB_PASSWORD || 'password@12345',
   port: process.env.DB_PORT || 5432,
