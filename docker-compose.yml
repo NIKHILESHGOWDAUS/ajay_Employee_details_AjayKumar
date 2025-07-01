@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres_db01
+    ports:
+      - "5566:5432"  # 🔁 Changed from 5412 to 5801 as per your request
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: auth_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  backend:
+    build: ./Backend
+    container_name: employee_backend00
+    ports:
+      - "3556:3556"
+    env_file:
+      - ./Backend/server.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./Backend/uploads:/app/uploads
+      - ./Backend/public:/app/public
+    networks:
+      - app-network
+
+  frontend:
+    build: ./Frontend
+    container_name: employee_frontend00
+    ports:
+      - "8045:80"
+    volumes:
+      - ./Frontend/build:/usr/share/nginx/html:ro  # 🔧 use `build/` output
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  pgdata:
+
