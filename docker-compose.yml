@@ -5,7 +5,7 @@ services:
     image: postgres:13
     container_name: postgres_db01
     ports:
-      - "5423:5432"  # 🔁 Changed from 5412 to 5801 as per your request
+      - "5627:5432"  # 🔁 Changed from 5412 to 5801 as per your request
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin123
@@ -25,7 +25,7 @@ services:
     build: ./Backend
     container_name: employee_backend00
     ports:
-      - "3423:3423"
+      - "3627:3627"
     env_file:
       - ./Backend/server.env
     depends_on:
@@ -41,7 +41,7 @@ services:
     build: ./Frontend
     container_name: employee_frontend00
     ports:
-      - "8425:80"
+      - "8633:80"
     volumes:
       - ./Frontend/build:/usr/share/nginx/html:ro  # 🔧 use `build/` output
     depends_on:
