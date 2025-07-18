@@ -1,15 +1,16 @@
+
 version: '3.8'
 
 services:
   postgres:
-    image: postgres:13
-    container_name: postgres_db01
-    ports:
-      - "5627:5432"  # 🔁 Changed from 5412 to 5801 as per your request
+    image: postgres:14
+    container_name: ajay_employee_postgres1
     environment:
+      POSTGRES_DB: auth_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin123
-      POSTGRES_DB: auth_db
+    ports:
+      - "6588:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -18,41 +19,31 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    networks:
-      - app-network
 
   backend:
     build: ./Backend
-    container_name: employee_backend00
+    container_name: ajay_employee_backend1
     ports:
-      - "3627:3627"
-    env_file:
-      - ./Backend/server.env
+      - "3029:3029"
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: admin123
+      DB_NAME: auth_db
+      DB_HOST: postgres
+      DB_PORT: 5432
     depends_on:
       postgres:
         condition: service_healthy
     volumes:
-      - ./Backend/uploads:/app/uploads
-      - ./Backend/public:/app/public
-    networks:
-      - app-network
+      - ./Backend/uploads:/app/Uploads
 
   frontend:
     build: ./Frontend
-    container_name: employee_frontend00
+    container_name: ajay_employee_frontend1
     ports:
-      - "8633:80"
-    volumes:
-      - ./Frontend/build:/usr/share/nginx/html:ro  # 🔧 use `build/` output
+      - "8110:80"
     depends_on:
       - backend
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    driver: bridge
 
 volumes:
   pgdata:
-

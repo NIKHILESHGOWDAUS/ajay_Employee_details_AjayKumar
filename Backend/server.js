@@ -14,11 +14,11 @@ const app = express();
 // CORS middleware
 app.use(cors({
   origin: [
-    'http://44.202.158.175:8633', // Login Server
-    'http://44.202.158.175:3627', // Employee Server
-    'http://44.202.158.175:5500', // Live Server (Default)
+    'http://13.201.102.139:8110', // Login Server
+    'http://13.201.102.139:3029', // Employee Server
+    'http://13.201.102.139:5500', // Live Server (Default)
     'http://127.0.0.1:5500', // Live Server (IP)
-   // 'http://44.202.158.175:8037'  // Live Server (Alternate)
+   // 'http://13.201.102.139:8037'  // Live Server (Alternate)
   ]
 }));
 
@@ -60,7 +60,7 @@ const pool = new Pool({
   user: process.env.DB_USER || 'postgres',
   host: process.env.DB_HOST || 'postgres',
   database: process.env.DB_NAME || 'auth_db',
-  password: process.env.DB_PASSWORD || 'admin123',
+  password: process.env.DB_PASSWORD || 'admin834',
   port: process.env.DB_PORT || 5432,
 });
 
@@ -261,7 +261,7 @@ app.delete('/api/delete-employee/:id', async (req, res) => {
 // Default route for favicon to suppress 404
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 
-const PORT = process.env.EMPLOYEE_PORT || 3412;
+const PORT = process.env.EMPLOYEE_PORT || 3029;
 app.listen(PORT, () => {
   console.log(`Employee server running on port ${PORT}`);
 });
